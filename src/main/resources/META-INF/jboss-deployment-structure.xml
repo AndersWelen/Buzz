@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure>
+	<deployment>
+		<resources>
+			<resource-root path="jnrpe-lib.jar" />
+		</resources>
+		<dependencies>      	
+			<!-- The DMR Handler requirements -->
+      		<module name="org.jboss.as.controller-client" />
+      		<module name="org.jboss.as.controller" />
+      		<module name="org.jboss.dmr" />
+      		<module name="org.jboss.msc" />
+      		<module name="org.jboss.as.server" />      		
+      		
+      		<!-- The Hibernate Handler requirements -->
+      		<module name="org.hibernate" />
+      		
+      		<!-- Commons libs used by jnrpe -->
+      		<module name="org.apache.commons.lang" />
+      		<module name="org.apache.commons.cli" />
+    	</dependencies>
+	</deployment>
+</jboss-deployment-structure>

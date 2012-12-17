@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<!-- JBoss 7 is very "picky" with xml -->			 
+<server xmlns="urn:jboss:service:7.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:jboss:service:7.0 jboss-service_7_0.xsd">
+
+	<!-- The Buzz configuration MBean -->
+	<mbean code="net.welen.buzz.configuration.Configuration" name="buzz:service=Configuration">
+		<attribute name="Level">${buzz.level:5L}</attribute>		
+		<attribute name="EnableBuiltInConfig">${buzz.enableBuiltInConfig:true}</attribute>
+		<attribute name="ExternalConfigFilename">${buzz.externalConfigFilename:}</attribute>
+	</mbean>
+
+	<!-- The JMX interface/protocol -->
+	<mbean code="net.welen.buzz.protocols.jmx.JMX" name="buzz:service=protocol,type=jmx">	
+		<attribute name="Enabled">${buzz.jmx.enabled:true}</attribute>
+		<attribute name="TimeToCache">${buzz.jmx.timeToCache:10000}</attribute>
+		
+		<!-- This didn't work on JBoss 7 so it had to be rewritten as String instead of ObjectName
+			 (https://issues.jboss.org/browse/AS7-5727)
+		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
+		-->
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+	</mbean>	
+
+	<!-- The log4j logger -->
+	<mbean code="net.welen.buzz.protocols.log4j.Log4j" name="buzz:service=protocol,type=log4j">
+		<attribute name="Enabled">${buzz.log4j.enabled:false}</attribute>	
+		<attribute name="SleepTime">${buzz.log4j.sleepTime:60000}</attribute>
+		<attribute name="LogPrefix">${buzz.log4j.logPrefix:Message from Buzz: }</attribute>
+		<attribute name="LogValues">${buzz.log4j.logValues:true}</attribute>		
+		<attribute name="LogWarnings">${buzz.log4j.logWarnings:true}</attribute>
+		<attribute name="LogAlarms">${buzz.log4j.logAlarms:true}</attribute>
+		 
+		<!-- This didn't work on JBoss 7 so it had to be rewritten as String instead of ObjectName
+			 (https://issues.jboss.org/browse/AS7-5727)		
+		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
+		-->
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+	</mbean>
+
+	<!-- The Munin protocol -->
+	<mbean code="net.welen.buzz.protocols.munin.Munin" name="buzz:service=protocol,type=munin">
+		<attribute name="Enabled">${buzz.munin.enabled:false}</attribute>	
+		<attribute name="Name">${buzz.munin.name:jboss}</attribute>
+		<!-- TODO Fallback should be ${jboss.bind.address} and NOT 127.0.0.1 -->	
+		<attribute name="Address">${buzz.munin.address:127.0.0.1}</attribute>
+		<attribute name="Port">${buzz.munin.port:4949}</attribute>
+		<attribute name="TcpReadTimeOut">${buzz.munin.TcpReadTimeOut:10000}</attribute>
+		<attribute name="MaxThreads">${buzz.munin.maxThreads:5}</attribute>
+		
+		<!-- This didn't work on JBoss 7 so it had to be rewritten as String instead of ObjectName
+			 (https://issues.jboss.org/browse/AS7-5727)		
+		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
+		-->
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+	</mbean>
+
+	<!-- The Nagios/Icinga NRPE protocol -->
+	<mbean code="net.welen.buzz.protocols.nrpe.NRPE" name="buzz:service=protocol,type=nrpe">
+		<attribute name="Enabled">${buzz.nrpe.enabled:false}</attribute>	
+		<!--  TODO Fallback should be ${jboss.bind.address} and NOT 127.0.0.1 -->
+		<attribute name="Address">${buzz.nrpe.address:127.0.0.1}</attribute>
+		<attribute name="AcceptedHosts">${buzz.nrpe.acceptedHosts:127.0.0.1}</attribute>
+		<attribute name="Port">${buzz.nrpe.port:5666}</attribute>
+		<attribute name="UseSSL">${buzz.nrpe.useSSL:false}</attribute>
+
+		<!-- This didn't work on JBoss 7 so it had to be rewritten as String instead of ObjectName
+			 (https://issues.jboss.org/browse/AS7-5727)		
+		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
+		-->
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+	</mbean>
+
+	<!-- The Mail protocol (Note! You need to configure the mail service first) -->
+	<mbean code="net.welen.buzz.protocols.mail.Mail" name="buzz:service=protocol,type=mail">
+		<attribute name="Enabled">${buzz.mail.enabled:false}</attribute>
+		<attribute name="SleepTime">${buzz.mail.sleepTime:60000}</attribute>
+		<attribute name="JNDIName">${buzz.mail.JNDIName:java:Mail}</attribute>		
+		<attribute name="FromAddress">${buzz.mail.fromAddress:buzz.mail.plugin@somewhere.in.space}</attribute>
+		<attribute name="ToAddresses">${buzz.mail.toAddresses:to@someone.that.bother}</attribute>
+		<attribute name="ServerId">${buzz.mail.serverId:localhost}</attribute>		
+		<attribute name="Subject">${buzz.mail.subject:Buzz mail plugin warnings/errors from server: %serverId%}</attribute>
+
+		<!-- This didn't work on JBoss 7 so it had to be rewritten as String instead of ObjectName
+			 (https://issues.jboss.org/browse/AS7-5727)		
+		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
+		-->
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>
+		<!-- This MBean doesn't exist in JBoss 7		
+		<depends>jboss:service=Mail</depends>
+		-->
+	</mbean>
+
+</server>
