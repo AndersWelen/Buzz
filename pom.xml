@@ -7,7 +7,7 @@
 	<artifactId>buzz</artifactId>
 	<name>Buzz</name>
 	<packaging>jboss-sar</packaging>
-	<version>0.8</version>
+	<version>0.8.1</version>
 	<description>Monitoring framework for the JBoss Application Server</description>
 	<url>https://github.com/AndersWelen/Buzz</url>
 
@@ -124,7 +124,7 @@
 	</build>
 
 	<properties>
-		<jboss.version>7.1.3.Final</jboss.version>
+		<jboss.version>7.1.2.Final</jboss.version>
 	</properties>
 
 	<dependencies>
