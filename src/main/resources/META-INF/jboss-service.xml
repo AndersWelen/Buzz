@@ -7,7 +7,7 @@
 
 	<!-- The Buzz configuration MBean -->
 	<mbean code="net.welen.buzz.configuration.Configuration" name="buzz:service=Configuration">
-		<attribute name="Level">${buzz.level:5L}</attribute>		
+		<attribute name="Level">${buzz.level:5}</attribute>		
 		<attribute name="EnableBuiltInConfig">${buzz.enableBuiltInConfig:true}</attribute>
 		<attribute name="ExternalConfigFilename">${buzz.externalConfigFilename:}</attribute>
 	</mbean>
