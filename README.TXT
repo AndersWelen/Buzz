@@ -16,5 +16,5 @@ In addition of several thirdparty components used from the JBoss Application Ser
 installation, Buzz is internally also using the following:
 
 - jnrpe-lib.jar:	http://jnrpe.sourceforge.net/
-					Released under "The Apache Software License, Version 2.0"
+			Released under "The Apache Software License, Version 2.0"
 
