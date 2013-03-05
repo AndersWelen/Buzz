@@ -17,4 +17,6 @@ installation, Buzz is internally also using the following:
 
 - jnrpe-lib.jar:	http://jnrpe.sourceforge.net/
 			Released under "The Apache Software License, Version 2.0"
-
+			
+- newrelic-api.jar:	http://newrelic.com/
+			Released under https://newrelic.com/docs/java/java-agent-license
