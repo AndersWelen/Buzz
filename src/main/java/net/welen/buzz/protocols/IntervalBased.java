@@ -75,7 +75,7 @@ public abstract class IntervalBased extends AbstractProtocol implements Interval
 	public void startProtocol() throws Exception {
 		stopped = false;		
 		LOG.debug("Starting the intervall thread");
-		new Thread(this, "Buzz Intervall thread").start();
+		new Thread(this, "Buzz Intervall thread " + this.hashCode()).start();
 	}
 
 	public void stopProtocol() throws Exception {

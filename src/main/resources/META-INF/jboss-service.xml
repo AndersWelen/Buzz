@@ -73,6 +73,18 @@
 		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
 	</mbean>
 
+	<!-- The New Relic protocol -->
+	<mbean code="net.welen.buzz.protocols.newrelic.NewRelicProtocol" name="buzz:service=protocol,type=newrelic">
+		<attribute name="Enabled">${buzz.newrelic.enabled:false}</attribute>
+		<attribute name="SleepTime">${buzz.newrelic.sleepTime:60000}</attribute>		
+
+		<!-- This didn't work on JBoss 7 so it had to be rewritten as String instead of ObjectName
+			 (https://issues.jboss.org/browse/AS7-5727)		
+		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
+		-->
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>
+	</mbean>
+
 	<!-- The Mail protocol (Note! You need to configure the mail service first) -->
 	<mbean code="net.welen.buzz.protocols.mail.Mail" name="buzz:service=protocol,type=mail">
 		<attribute name="Enabled">${buzz.mail.enabled:false}</attribute>

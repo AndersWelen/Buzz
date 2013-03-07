@@ -21,13 +21,15 @@
 package net.welen.buzz.protocols.newrelic;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import com.newrelic.api.agent.NewRelic;
 
 import net.welen.buzz.protocols.BuzzAnswer;
 import net.welen.buzz.protocols.IntervalBased;
-import net.welen.buzz.protocols.mail.MailAnswer;
 
 /**
  * @author welle
@@ -37,21 +39,39 @@ public class NewRelicProtocol extends IntervalBased implements NewRelicProtocolB
 	
 	private static final Logger LOG = Logger.getLogger(NewRelicProtocol.class);
 
+	public void startProtocol() throws Exception {
+		super.startProtocol();
+		LOG.info("Starting Buzz New Relic protocol.");
+		
+		// New Relic setup
+		NewRelic.setTransactionName("Buzz", "/Buzz");
+		//NewRelic.setRequestAndResponse(new Req, null);
+	}
+
+	public void stopProtocol() throws Exception {
+		super.stopProtocol();
+		LOG.info("Stopping Buzz New Relic protocol.");
+	}
+
 	public void performWork() {
 		// Get values
 		BuzzAnswer input = new BuzzAnswer();
 		getValues(input);
-		
-		// NewRelic setup	
-		NewRelic.ignoreTransaction();
-		NewRelic.ignoreApdex();
-		
+				
 		// Send values
-		NewRelic.recordMetric("", 0);
+		LOG.info("Sending data to New Relic");
 		
-		// Send warnings
+		NewRelic.recordMetric("AA", 10);
+		NewRelic.recordMetric("A/B", 100);
+		NewRelic.recordMetric("A/B/C", 1000);
 		
-		// Send alarms
+		// Send errors
+		LOG.debug("Sending errors to New Relic");
+		// TODO Filter data
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("Value1", "Data1");
+		data.put("Value2", "Data2");		
+		NewRelic.noticeError("Errors detected by Buzz. See attached parameters!", data);
 	}
 		
 }
