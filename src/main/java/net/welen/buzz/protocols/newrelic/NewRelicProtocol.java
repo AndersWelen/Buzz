@@ -67,7 +67,7 @@ public class NewRelicProtocol extends IntervalBased implements NewRelicProtocolB
 		
 		// Send errors
 		LOG.debug("Sending errors to New Relic");
-		// TODO Filter datab
+		// TODO Filter data
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("Value1", "Data1");
 		data.put("Value2", "Data2");		
