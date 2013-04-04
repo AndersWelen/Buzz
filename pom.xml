@@ -191,6 +191,11 @@
 			<artifactId>jnrpe-lib</artifactId>
 			<version>1.0.1-beta-10</version>
 		</dependency>
+		<dependency>
+    		<groupId>com.quigley</groupId>
+    		<artifactId>zabbixj</artifactId>
+    		<version>1.0.1</version>
+		</dependency>
 
 		<!-- Test libraries -->
 		<dependency>

@@ -3,6 +3,7 @@
 	<deployment>
 		<resources>
 			<resource-root path="jnrpe-lib.jar" />
+			<resource-root path="xabbixj.jar" />
 		</resources>
 		<dependencies>      	
 			<!-- The DMR Handler requirements -->
