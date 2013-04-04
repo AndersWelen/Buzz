@@ -59,7 +59,7 @@ public class NewRelicProtocol extends IntervalBased implements NewRelicProtocolB
 		getValues(input);
 				
 		// Send values
-		LOG.info("Sending data to New Relic");
+		LOG.debug("Sending data to New Relic");
 		
 		NewRelic.recordMetric("AA", 10);
 		NewRelic.recordMetric("A/B", 100);
@@ -67,7 +67,7 @@ public class NewRelicProtocol extends IntervalBased implements NewRelicProtocolB
 		
 		// Send errors
 		LOG.debug("Sending errors to New Relic");
-		// TODO Filter data
+		// TODO Filter datab
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("Value1", "Data1");
 		data.put("Value2", "Data2");		
