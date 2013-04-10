@@ -37,7 +37,7 @@ import net.welen.buzz.protocols.BuzzAnswer;
 import net.welen.buzz.typehandler.TypeHandler;
 
 /**
- * NRPE protcol for Nagios (and Icinga)
+ * NRPE protocol for Nagios (and Icinga)
  * 
  * @author welle
  *

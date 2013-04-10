@@ -73,6 +73,18 @@
 		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
 	</mbean>
 
+	<!-- The Zabbix protocol -->
+	<mbean code="net.welen.buzz.protocols.zabbix.Zabbix" name="buzz:service=protocol,type=zabbix">
+		<attribute name="Enabled">${buzz.zabbix.enabled:false}</attribute>	
+		<attribute name="Port">${buzz.zabbix.port:10051}</attribute>
+
+		<!-- This didn't work on JBoss 7 so it had to be rewritten as String instead of ObjectName
+			 (https://issues.jboss.org/browse/AS7-5727)		
+		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
+		-->
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+	</mbean>
+
 	<!-- The Mail protocol (Note! You need to configure the mail service first) -->
 	<mbean code="net.welen.buzz.protocols.mail.Mail" name="buzz:service=protocol,type=mail">
 		<attribute name="Enabled">${buzz.mail.enabled:false}</attribute>

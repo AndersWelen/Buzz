@@ -18,3 +18,5 @@ installation, Buzz is internally also using the following:
 - jnrpe-lib.jar:	http://jnrpe.sourceforge.net/
 			Released under "The Apache Software License, Version 2.0"
 
+- jabbixj.jar:		http://quigley.com/software/zabbixj/
+			Released under "GNU Lesser General Public License, Version 3"

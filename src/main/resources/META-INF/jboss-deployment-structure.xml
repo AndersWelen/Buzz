@@ -3,7 +3,8 @@
 	<deployment>
 		<resources>
 			<resource-root path="jnrpe-lib.jar" />
-			<resource-root path="xabbixj.jar" />
+			<resource-root path="json.jar" />
+			<resource-root path="zabbixj.jar" />		
 		</resources>
 		<dependencies>      	
 			<!-- The DMR Handler requirements -->
@@ -19,6 +20,9 @@
       		<!-- Commons libs used by jnrpe -->
       		<module name="org.apache.commons.lang" />
       		<module name="org.apache.commons.cli" />
+
+      		<!-- libs used by Zabbix/J -->      		
+      		<module name="org.slf4j" />
     	</dependencies>
 	</deployment>
 </jboss-deployment-structure>
