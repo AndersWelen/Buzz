@@ -20,7 +20,7 @@
 			<name>GNU Lesser General Public License</name>
 			<url>http://www.gnu.org/licenses/lgpl.html</url>
 			<distribution>repo</distribution>
-			<comments>Included are "net.sf.jnrpe" that is released using "The Apache Software License, Version 2.0"</comments>
+			<comments>Included are "jnrpe" (that is released using "The Apache Software License, Version 2.0") and "Zabbix/J" (that is released using "GNU Lesser General Public License, Version 3")</comments>
 		</license>
 	</licenses>
 
