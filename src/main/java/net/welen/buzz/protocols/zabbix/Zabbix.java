@@ -28,7 +28,6 @@ import com.quigley.zabbixj.agent.ZabbixAgent;
 
 import net.welen.buzz.protocols.AbstractProtocol;
 import net.welen.buzz.protocols.BuzzAnswer;
-import net.welen.buzz.typehandler.TypeHandler;
 
 /**
  * Zabbix protocol
@@ -42,10 +41,10 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 	
 	private ZabbixAgent agent = null;
 	private Boolean passive = true;	
-	private Integer listenPort = 10051;
+	private Integer listenPort = 10050;
 	private String listenAddress = "0.0.0.0";
 	private Boolean active = false;
-	private String hostName = "localhost";
+	private String hostName = "JBoss";
 	private String serverAddress = "localhost";
 	private Integer serverPort = 10051;
 	
@@ -55,12 +54,14 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 	public void startProtocol() throws Exception {
 		ZabbixAgent agent = new ZabbixAgent();
 
+		// Setup passive
 		agent.setEnablePassive(passive);
 		if (passive) {
 			agent.setListenPort(listenPort);
 			agent.setListenAddress(listenAddress);
 		}
-		
+
+		// Setup active
 		agent.setEnableActive(active);
 		if (active) {			
 			agent.setHostName(hostName);
@@ -68,10 +69,20 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 			agent.setServerPort(serverPort);
 		}
 		
-		agent.addProvider("Buzz", new BuzzMetricsProvider());
+		// Add providers
+		agent.addProvider("buzz", new BuzzMetricsProvider(this));
 		
+		// Start service
 		agent.start();
 		LOG.info("Buzz Zabbix started.");
+	}
+	
+	protected Object getIndividualValue(String category, String name, String key) {
+		// TODO Zabbix need to be quick so this need to be collected and cached in background
+		BuzzAnswer data = new BuzzAnswer();				
+		getValues(data);
+		
+		return data.getIndividualValue(category, name, key);
 	}
 
 	/* (non-Javadoc)
@@ -82,38 +93,6 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 			agent.stop();
 		}
 		LOG.info("Buzz Zabbix stopped.");
-	}
-
-	/* (non-Javadoc)
-	 * @see net.welen.buzz.protocols.AbstractProtocol#getValues(net.welen.buzz.protocols.BuzzAnswer)
-	 */
-	@Override
-	public void getValues(BuzzAnswer answer) {
-		super.getValues(answer);
-	}
-
-	/* (non-Javadoc)
-	 * @see net.welen.buzz.protocols.AbstractProtocol#filterWarnings(net.welen.buzz.protocols.BuzzAnswer, net.welen.buzz.protocols.BuzzAnswer)
-	 */
-	@Override
-	public void filterWarnings(BuzzAnswer input, BuzzAnswer output) {
-		super.filterWarnings(input, output);
-	}
-
-	/* (non-Javadoc)
-	 * @see net.welen.buzz.protocols.AbstractProtocol#filterAlarms(net.welen.buzz.protocols.BuzzAnswer, net.welen.buzz.protocols.BuzzAnswer)
-	 */
-	@Override
-	public void filterAlarms(BuzzAnswer input, BuzzAnswer output) {
-		super.filterAlarms(input, output);
-	}
-
-	/* (non-Javadoc)
-	 * @see net.welen.buzz.protocols.AbstractProtocol#getHandler(java.lang.String)
-	 */
-	@Override
-	public TypeHandler getHandler(String name) {
-		return super.getHandler(name);
 	}
 
 	public void setListenPort(Integer listenPort) {

@@ -9,17 +9,29 @@ import com.quigley.zabbixj.metrics.MetricsProvider;
 public class BuzzMetricsProvider implements MetricsProvider {
 	private static final Logger LOG = Logger.getLogger(BuzzMetricsProvider.class);
 	
+	private Zabbix protocol = null;
+	
+	public BuzzMetricsProvider(Zabbix protocol) {
+		this.protocol = protocol;
+	}
+	
 	public Object getValue(MetricsKey key) throws MetricsException {		
 		LOG.debug("Key: " + key.getKey());
         
-		// TODO
-		throw new MetricsException("Not supported key: " + key.getKey());
-		/*
-		Object answer = new Integer(42);		
+		// Get Data
+		String keys[] = key.getKey().split("\\.");
+		if (keys.length != 3) {
+			LOG.error("Incorrect key: " + key.getKey());
+			throw new MetricsException("Incorrect key: " + key.getKey());			
+		}		
+		Object answer = protocol.getIndividualValue(keys[0], keys[1], keys[2]);
+		if (answer == null) {
+			LOG.warn("Key not found: " + key.getKey());
+			throw new MetricsException("Key not found: " + key.getKey());						
+		}
 		
-		LOG.debug("Returning value for key (" + key.getKey() + "): " + answer);
+		LOG.debug("Returning \"" + answer.toString() + "\" for: " + key.getKey());		
 		return answer;
-		*/
 	}
-
+	
 }
