@@ -80,7 +80,7 @@
 		<attribute name="ListenPort">${buzz.zabbix.listenPort:10050}</attribute>
 		<attribute name="ListenAddress">${buzz.zabbix.listenAddress:0.0.0.0}</attribute>		
 		<attribute name="Active">${buzz.zabbix.active:false}</attribute>
-		<attribute name="HostName">${buzz.zabbix.hostName:JBoss}</attribute>
+		<attribute name="HostName">${buzz.zabbix.hostName:buzz}</attribute>
 		<attribute name="ServerAddress">${buzz.zabbix.serverAddress:localhost}</attribute>
 		<attribute name="ServerPort">${buzz.zabbix.serverPort:10051}</attribute>
 		

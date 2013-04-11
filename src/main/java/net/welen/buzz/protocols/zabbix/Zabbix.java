@@ -44,7 +44,7 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 	private Integer listenPort = 10050;
 	private String listenAddress = "0.0.0.0";
 	private Boolean active = false;
-	private String hostName = "JBoss";
+	private String hostName = "buzz";
 	private String serverAddress = "localhost";
 	private Integer serverPort = 10051;
 	
@@ -89,6 +89,7 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 	 * @see net.welen.buzz.protocols.Protocol#stopProtocol()
 	 */
 	public void stopProtocol() throws Exception {
+		// TODO It doesn't seem to release the socket
 		if (agent != null) {
 			agent.stop();
 		}
