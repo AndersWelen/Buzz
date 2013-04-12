@@ -40,7 +40,9 @@ public class BuzzMetricsProvider implements MetricsProvider {
 	
 	public Object getValue(MetricsKey metricKey) throws MetricsException {
 		String key = metricKey.getKey();
-		LOG.debug("Key: " + key);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Key: " + key);
+		}
 
 		// Zabbix Discovery?
 		if (key.equals("discovery")) {
@@ -70,26 +72,30 @@ public class BuzzMetricsProvider implements MetricsProvider {
 			throw new MetricsException("Key not found: " + path);						
 		}
 		
-		// TODO
-		LOG.info("Returning \"" + answer.toString() + "\" for: " + key);		
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Returning \"" + answer.toString() + "\" for: " + key);
+		}
 		return answer;
 	}
 
-	private String getZabbixDiscovery() throws JSONException {	
-		JSONObject json = new JSONObject();		
+	private String getZabbixDiscovery() throws JSONException {							
+		JSONObject jsonObject = new JSONObject();
 		JSONArray jsonArray = new JSONArray();
 		
-		JSONObject jsonObject = new JSONObject();
+		// Get all measurements
+		String paths[] = protocol.getAllPaths();
+		for (String s: paths) {
+			JSONObject tmpObject = new JSONObject();
+			tmpObject.put("{#BUZZPATH}", s);
+			jsonArray.put(tmpObject);
+		}						
+		jsonObject.put("data", jsonArray);
 		
-		// TODO
-		jsonObject.put("{#BUZZPATH}", "jvmThreads/JVMThreads/ThreadCount");
-		jsonArray.put(jsonObject);		
+		String answer = jsonObject.toString();
 
-		json.put("data", jsonArray);
-		
-		String answer = json.toString();
-		// TODO
-		LOG.info("Returning Zabbix discovery; " + answer);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Returning Zabbix discovery; " + answer);
+		}
 		return answer;
 	}
 	

@@ -78,13 +78,22 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 	}
 	
 	protected Object getIndividualValue(String category, String name, String key) {
-		// TODO Zabbix need to be quick so this need to be collected and cached in background
-		BuzzAnswer data = new BuzzAnswer();				
-		getValues(data);
-		
+		BuzzAnswer data = getBuzzAnswer();					
 		return data.getIndividualValue(category, name, key);
 	}
 
+	protected String[] getAllPaths() {
+		ZabbixAnswer data = getBuzzAnswer();						
+		return data.getAllPaths();
+	}
+
+	private ZabbixAnswer getBuzzAnswer() {
+		// TODO Zabbix need to be quick so this need to be collected and cached in background
+		ZabbixAnswer data = new ZabbixAnswer();
+		getValues(data);
+		return data;
+	}
+	
 	/* (non-Javadoc)
 	 * @see net.welen.buzz.protocols.Protocol#stopProtocol()
 	 */
