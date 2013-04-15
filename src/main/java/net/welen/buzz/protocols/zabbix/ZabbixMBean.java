@@ -28,6 +28,8 @@ import net.welen.buzz.protocols.ProtocolMBean;
  */
 public interface ZabbixMBean extends ProtocolMBean {
 
+	public void setInterval(Integer interval);
+	public Integer getInterval();
 	public void setListenPort(Integer listenPort);
 	public Integer getListenPort();
 	public void setListenAddress(String listenAddress);

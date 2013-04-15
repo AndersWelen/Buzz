@@ -87,6 +87,13 @@ public class BuzzMetricsProvider implements MetricsProvider {
 		for (String s: paths) {
 			JSONObject tmpObject = new JSONObject();
 			tmpObject.put("{#BUZZPATH}", s);
+			String parts[] = s.split("/");
+			tmpObject.put("{#BUZZCATEGORY}", parts[0]);
+			tmpObject.put("{#BUZZNAME}", parts[1]);
+			tmpObject.put("{#BUZZKEY}", parts[2]);
+			// TODO
+			//tmpObject.put("{#BUZZDESCRIPTION}", "The number of threads");
+			//tmpObject.put("{#BUZZUNIT}", "Count");
 			jsonArray.put(tmpObject);
 		}						
 		jsonObject.put("data", jsonArray);

@@ -21,7 +21,8 @@
 			 (https://issues.jboss.org/browse/AS7-5727)
 		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
 		-->
-		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>
+		<depends>buzz:service=Configuration</depends>		
 	</mbean>	
 
 	<!-- The log4j logger -->
@@ -37,7 +38,8 @@
 			 (https://issues.jboss.org/browse/AS7-5727)		
 		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
 		-->
-		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>
+		<depends>buzz:service=Configuration</depends>		
 	</mbean>
 
 	<!-- The Munin protocol -->
@@ -54,7 +56,8 @@
 			 (https://issues.jboss.org/browse/AS7-5727)		
 		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
 		-->
-		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>
+		<depends>buzz:service=Configuration</depends>		
 	</mbean>
 
 	<!-- The Nagios/Icinga NRPE protocol -->
@@ -70,12 +73,14 @@
 			 (https://issues.jboss.org/browse/AS7-5727)		
 		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
 		-->
-		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>
+		<depends>buzz:service=Configuration</depends>		
 	</mbean>
 
 	<!-- The Zabbix protocol -->
 	<mbean code="net.welen.buzz.protocols.zabbix.Zabbix" name="buzz:service=protocol,type=zabbix">
 		<attribute name="Enabled">${buzz.zabbix.enabled:false}</attribute>
+		<attribute name="Interval">${buzz.zabbix.interval:30000}</attribute>
 		<attribute name="Passive">${buzz.zabbix.passive:true}</attribute>	
 		<attribute name="ListenPort">${buzz.zabbix.listenPort:10050}</attribute>
 		<attribute name="ListenAddress">${buzz.zabbix.listenAddress:0.0.0.0}</attribute>		
@@ -88,7 +93,8 @@
 			 (https://issues.jboss.org/browse/AS7-5727)		
 		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
 		-->
-		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>		
+		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>
+		<depends>buzz:service=Configuration</depends>		
 	</mbean>
 
 	<!-- The Mail protocol (Note! You need to configure the mail service first) -->
@@ -106,6 +112,7 @@
 		<depends optional-attribute-name="ConfigurationMBeanName">buzz:service=Configuration</depends>
 		-->
 		<attribute name="ConfigurationMBeanName">buzz:service=Configuration</attribute>
+		<depends>buzz:service=Configuration</depends>
 		<!-- This MBean doesn't exist in JBoss 7		
 		<depends>jboss:service=Mail</depends>
 		-->

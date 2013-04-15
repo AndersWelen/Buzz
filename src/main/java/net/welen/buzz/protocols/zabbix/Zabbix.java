@@ -38,6 +38,9 @@ import net.welen.buzz.protocols.BuzzAnswer;
 public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 
 	private static final Logger LOG = Logger.getLogger(Zabbix.class);
+
+	private ZabbixAnswer answer = null;
+	private ZabbixAnswerCollector collector = new ZabbixAnswerCollector();
 	
 	private ZabbixAgent agent = null;
 	private Boolean passive = true;	
@@ -47,6 +50,30 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 	private String hostName = "buzz";
 	private String serverAddress = "localhost";
 	private Integer serverPort = 10051;
+	private Integer interval = 30*1000;
+
+	private class ZabbixAnswerCollector extends Thread {
+		boolean stop = false;
+		
+		public void run() {
+				stop = false;
+		        try {
+		        	while (!stop) {
+		        		ZabbixAnswer tmp = new ZabbixAnswer();
+		        		getValues(tmp);
+		        		answer = tmp;			
+		        		Thread.sleep(interval);
+		        	}
+		        } catch (InterruptedException e) {
+		        	// Nothing to do
+		    }
+		}
+	
+		public void stopCollector() {
+			stop = true;
+		}
+
+	}
 	
 	/* (non-Javadoc)
 	 * @see net.welen.buzz.protocols.Protocol#startProtocol()
@@ -54,6 +81,9 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 	public void startProtocol() throws Exception {
 		ZabbixAgent agent = new ZabbixAgent();
 
+		// Start the collection thread
+		collector.start();
+		
 		// Setup passive
 		agent.setEnablePassive(passive);
 		if (passive) {
@@ -87,17 +117,17 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 		return data.getAllPaths();
 	}
 
-	private ZabbixAnswer getBuzzAnswer() {
-		// TODO Zabbix need to be quick so this need to be collected and cached in background
-		ZabbixAnswer data = new ZabbixAnswer();
-		getValues(data);
-		return data;
+	private ZabbixAnswer getBuzzAnswer() {		
+		return answer;
 	}
 	
 	/* (non-Javadoc)
 	 * @see net.welen.buzz.protocols.Protocol#stopProtocol()
 	 */
 	public void stopProtocol() throws Exception {
+		// Stop the collector
+		collector.stopCollector();
+		
 		// TODO It doesn't seem to release the socket
 		if (agent != null) {
 			agent.stop();
@@ -161,4 +191,11 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 		return listenAddress;
 	}
 
+	public void setInterval(Integer interval) {	
+		this.interval = interval;
+	}
+	
+	public Integer getInterval() {
+		return interval;
+	}
 }
