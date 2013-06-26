@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+	<version>2.0</version>
+	<date>2013-04-16T08:36:09Z</date>
+	<groups>
+		<group>
+			<name>JBoss Application Servers</name>
+		</group>
+	</groups>
+	<templates>
+		<template>
+			<template>BuzzTemplate</template>
+			<name>BuzzTemplate</name>
+			
+			<groups>
+				<group>
+					<name>JBoss Application Servers</name>
+				</group>
+			</groups>
+			
+			<applications />
+			
+			<items />
+			
+			<discovery_rules>
+				<discovery_rule>
+					<name>Discovery</name>
+					<type>0</type>
+					<snmp_community />
+					<snmp_oid />
+					<key>buzz.discovery</key>
+					<delay>30</delay>
+					<status>0</status>
+					<allowed_hosts />
+					<snmpv3_securityname />
+					<snmpv3_securitylevel>0</snmpv3_securitylevel>
+					<snmpv3_authpassphrase />
+					<snmpv3_privpassphrase />
+					<delay_flex />
+					<params />
+					<ipmi_sensor />
+					<authtype>0</authtype>
+					<username />
+					<password />
+					<publickey />
+					<privatekey />
+					<port />
+					<filter>:</filter>
+					<lifetime>30</lifetime>
+					<description>Discovery of Buzz exposed information from JBoss Application Servers.</description>
+					<item_prototypes>
+						<item_prototype>
+							<name>{#BUZZTITLE} - {#BUZZLABEL}</name>
+							<type>0</type>
+							<snmp_community />
+							<multiplier>0</multiplier>
+							<snmp_oid />
+							<key>buzz.fetch[{#BUZZPATH}]</key>
+							<delay>30</delay>
+							<history>90</history>
+							<trends>365</trends>
+							<status>0</status>
+							<value_type>0</value_type>
+							<allowed_hosts />
+							<!-- TODO Impl. when Zabbix can handle it as: "<units>{#BUZZITEM}</unit>" -->
+							<units />
+							<delta>0</delta>
+							<snmpv3_securityname />
+							<snmpv3_securitylevel>0</snmpv3_securitylevel>
+							<snmpv3_authpassphrase />
+							<snmpv3_privpassphrase />
+							<formula>1</formula>
+							<delay_flex />
+							<params />
+							<ipmi_sensor />
+							<data_type>0</data_type>
+							<authtype>0</authtype>
+							<username />
+							<password />
+							<publickey />
+							<privatekey />
+							<port />
+							<description />
+							<inventory_link>0</inventory_link>
+							<applications />
+							<valuemap />
+						</item_prototype>
+					</item_prototypes>					
+
+					<trigger_prototypes>
+						<!--  TODO -->
+                        <trigger_prototype>
+                        <!-- 
+                            <expression>({BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}&lt;0) | ({BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}&gt;0)</expression>
+                            <expression>{BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}&lt;0</expression>
+                            -->
+                            <expression>{BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}&lt;{BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}</expression>
+                            <name>{#BUZZTITLE} - {#BUZZLABEL}</name>
+                            <url/>
+                            <status>0</status>
+                            <priority>2</priority>
+                            <description/>
+                            <type>0</type>
+                        </trigger_prototype>
+                    </trigger_prototypes>
+					
+							
+					<graph_prototypes>
+						<!--  TODO
+						<graph_prototype>
+							<name>{#BUZZTITLE}</name>
+							<width>900</width>
+							<height>200</height>
+							<yaxismin>0.0000</yaxismin>
+							<yaxismax>100.0000</yaxismax>
+							<show_work_period>1</show_work_period>
+							<show_triggers>1</show_triggers>
+							<type>0</type>
+							<show_legend>1</show_legend>
+							<show_3d>0</show_3d>
+							<percent_left>0.0000</percent_left>
+							<percent_right>0.0000</percent_right>
+							<ymin_type_1>0</ymin_type_1>
+							<ymax_type_1>0</ymax_type_1>
+							<ymin_item_1>0</ymin_item_1>
+							<ymax_item_1>0</ymax_item_1>
+							<graph_items>
+								<graph_item>
+									<sortorder>0</sortorder>
+									<drawtype>0</drawtype>
+									<color>C80000</color>
+									<yaxisside>0</yaxisside>
+									<calc_fnc>2</calc_fnc>
+									<type>0</type>
+									<item>
+										<host>BuzzTemplate</host>
+										<key>buzz.fetch[{#BUZZPATH}]</key>
+									</item>
+								</graph_item>
+							</graph_items>
+						</graph_prototype>
+						-->
+					</graph_prototypes>
+					
+				</discovery_rule>
+			</discovery_rules>
+			
+			<macros />
+			
+			<templates />
+			
+			<screens />
+			
+		</template>
+	</templates>
+</zabbix_export>
