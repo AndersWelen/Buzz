@@ -28,6 +28,7 @@ import com.quigley.zabbixj.agent.ZabbixAgent;
 
 import net.welen.buzz.protocols.AbstractProtocol;
 import net.welen.buzz.protocols.BuzzAnswer;
+import net.welen.buzz.typehandler.TypeHandler;
 
 /**
  * Zabbix protocol
@@ -117,7 +118,7 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 		return data.getAllPaths();
 	}
 
-	private ZabbixAnswer getBuzzAnswer() {		
+	protected ZabbixAnswer getBuzzAnswer() {		
 		return answer;
 	}
 	
@@ -135,6 +136,10 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 		LOG.info("Buzz Zabbix stopped.");
 	}
 
+	public TypeHandler getTypeHandler(String name) {
+		return getHandler(name);				
+	}
+	
 	public void setListenPort(Integer listenPort) {
 		this.listenPort = listenPort;
 	}

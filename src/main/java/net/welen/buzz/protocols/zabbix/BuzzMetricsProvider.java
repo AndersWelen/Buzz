@@ -20,6 +20,8 @@
  */
 package net.welen.buzz.protocols.zabbix;
 
+import java.util.Properties;
+
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,18 +50,22 @@ public class BuzzMetricsProvider implements MetricsProvider {
 		if (key.equals("discovery")) {
 			try {
 				return getZabbixDiscovery();
-			} catch (JSONException e) {
-				LOG.error("Couldn't get Zabbix discovery", e);
-				throw new MetricsException(e);
+			} catch (Throwable t) {
+				LOG.error("Couldn't get Zabbix discovery", t);
+				throw new MetricsException(t);	
 			}
 		}
-
-		if (!key.equals("fetch")) {
-			LOG.error("Incorrect key: " + key);
-			throw new MetricsException("Incorrect key: " + key);			
+		
+		// Zabbix fetching values?		
+		if (key.equals("fetch")) {
+			return getZabbixFetch(metricKey);
 		}
-
-		// Get Data
+		
+		LOG.error("Unknown key: " + key);
+		throw new MetricsException("Unknown key: " + key);					
+	}
+	
+	private String getZabbixFetch(MetricsKey metricKey) {							
 		String path = metricKey.getParameters()[0];
 		String paths[] = path.split("/");
 		if (paths.length != 3) {
@@ -73,27 +79,53 @@ public class BuzzMetricsProvider implements MetricsProvider {
 		}
 		
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("Returning \"" + answer.toString() + "\" for: " + key);
+			LOG.debug("Returning \"" + answer.toString() + "\" for: " + metricKey.getKey());
 		}
-		return answer;
+		return answer.toString();
 	}
-
+	
 	private String getZabbixDiscovery() throws JSONException {							
 		JSONObject jsonObject = new JSONObject();
 		JSONArray jsonArray = new JSONArray();
 		
 		// Get all measurements
 		String paths[] = protocol.getAllPaths();
-		for (String s: paths) {
+		for (String path: paths) {
 			JSONObject tmpObject = new JSONObject();
-			tmpObject.put("{#BUZZPATH}", s);
-			String parts[] = s.split("/");
+			tmpObject.put("{#BUZZPATH}", path);
+			String parts[] = path.split("/");
 			tmpObject.put("{#BUZZCATEGORY}", parts[0]);
 			tmpObject.put("{#BUZZNAME}", parts[1]);
 			tmpObject.put("{#BUZZKEY}", parts[2]);
-			// TODO
-			//tmpObject.put("{#BUZZDESCRIPTION}", "The number of threads");
-			//tmpObject.put("{#BUZZUNIT}", "Count");
+
+			Properties setup = protocol.getTypeHandler(parts[0]).getProperties();
+			// TODO Should not reference Munin setup
+			// This is not used until Zabbix can pick it up in the template
+			tmpObject.put("{#BUZZUNIT}", setup.get("protocol.munin.graph_vlabel"));
+			tmpObject.put("{#BUZZTITLE}", ((String) setup.get("protocol.munin.graph_title")).replaceAll("%n", parts[1]));
+			tmpObject.put("{#BUZZLABEL}", setup.get("protocol.munin." + parts[2] + ".label"));
+					
+			String warnThreshold = (String) setup.get("threshold." + parts[2] + ".warning");
+			if (warnThreshold != null) {				
+				String warnLevels[] = warnThreshold.split(":");
+				if (warnLevels[0].length() > 0) {
+					tmpObject.put("{#BUZZWARNLOW}", warnLevels[0]);
+				}
+				if (warnLevels.length > 1 && warnLevels[1].length() > 0) {
+					tmpObject.put("{#BUZZWARNHIGH}", warnLevels[1]);
+				}
+			}		
+			String criticalThreshold = (String) setup.get("threshold." + parts[2] + ".critical");
+			if (criticalThreshold != null) {
+				String criticalLevels[] = criticalThreshold.split(":");
+				if (criticalLevels[0].length() > 0) {
+					tmpObject.put("{#BUZZCRITICALLOW}", criticalLevels[0]);
+				}
+				if (criticalLevels.length > 1 && criticalLevels[1].length() > 0) {
+					tmpObject.put("{#BUZZCRITICALHIGH}", criticalLevels[1]);
+				}				
+			}		
+			
 			jsonArray.put(tmpObject);
 		}						
 		jsonObject.put("data", jsonArray);
@@ -101,7 +133,7 @@ public class BuzzMetricsProvider implements MetricsProvider {
 		String answer = jsonObject.toString();
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("Returning Zabbix discovery; " + answer);
+			LOG.debug("Returning Zabbix discovery: " + answer);
 		}
 		return answer;
 	}
