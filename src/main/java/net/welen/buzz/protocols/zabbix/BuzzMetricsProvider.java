@@ -56,6 +56,11 @@ public class BuzzMetricsProvider implements MetricsProvider {
 			}
 		}
 		
+		// Zabbix ping
+		if (key.equals("ping")) {
+			return 1;
+		}
+		
 		// Zabbix fetching values?		
 		if (key.equals("fetch")) {
 			return getZabbixFetch(metricKey);

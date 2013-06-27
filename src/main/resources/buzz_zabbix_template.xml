@@ -2,11 +2,13 @@
 <zabbix_export>
 	<version>2.0</version>
 	<date>2013-04-16T08:36:09Z</date>
+
 	<groups>
 		<group>
-			<name>JBoss Application Servers</name>
+			<name>JBoss/Wildfly Application Servers</name>
 		</group>
 	</groups>
+
 	<templates>
 		<template>
 			<template>BuzzTemplate</template>
@@ -14,13 +16,51 @@
 			
 			<groups>
 				<group>
-					<name>JBoss Application Servers</name>
+					<name>JBoss/Wildfly Application Servers</name>
 				</group>
 			</groups>
 			
 			<applications />
-			
-			<items />
+		
+			<items>
+				<item>
+					<name>BuzzAgent ping</name>
+					<type>0</type>
+					<snmp_community></snmp_community>
+					<multiplier>0</multiplier>
+					<snmp_oid></snmp_oid>
+					<key>buzz.ping</key>
+					<delay>30</delay>
+					<history>90</history>
+					<trends>365</trends>
+					<status>0</status>
+					<value_type>3</value_type>
+					<allowed_hosts></allowed_hosts>
+					<units></units>
+					<delta>0</delta>
+					<snmpv3_securityname></snmpv3_securityname>
+					<snmpv3_securitylevel>0</snmpv3_securitylevel>
+					<snmpv3_authpassphrase></snmpv3_authpassphrase>
+					<snmpv3_privpassphrase></snmpv3_privpassphrase>
+					<formula>1</formula>
+					<delay_flex></delay_flex>
+					<params></params>
+					<ipmi_sensor></ipmi_sensor>
+					<data_type>0</data_type>
+					<authtype>0</authtype>
+					<username></username>
+					<password></password>
+					<publickey></publickey>
+					<privatekey></privatekey>
+					<port></port>
+					<description>The BuzzAgent always returns 1 for this item. It could be
+						used in combination with nodata() for availability check.
+					</description>
+					<inventory_link>0</inventory_link>
+					<applications/>
+					<valuemap/>
+				</item>
+			</items>
 			
 			<discovery_rules>
 				<discovery_rule>
@@ -47,7 +87,8 @@
 					<port />
 					<filter>:</filter>
 					<lifetime>30</lifetime>
-					<description>Discovery of Buzz exposed information from JBoss Application Servers.</description>
+					<description>Discovery of Buzz exposed information from JBoss/Wildfly Application Servers.</description>
+
 					<item_prototypes>
 						<item_prototype>
 							<name>{#BUZZTITLE} - {#BUZZLABEL}</name>
@@ -87,14 +128,15 @@
 						</item_prototype>
 					</item_prototypes>					
 
-					<trigger_prototypes>
-						<!--  TODO -->
+					<trigger_prototypes>						
+					
+						<!-- WARNING -->
                         <trigger_prototype>
-                        <!-- 
-                            <expression>({BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}&lt;0) | ({BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}&gt;0)</expression>
-                            <expression>{BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}&lt;0</expression>
+                        	<!-- TODO This should be implemented when Zabbix supports it
+                        	          (https://www.zabbix.com/forum/showthread.php?t=40760)                             
+                            <expression>{BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}&lt;<{#TRIGGERVALUE}/expression>
                             -->
-                            <expression>{BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}&lt;{BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)}</expression>
+                            <expression>{BuzzTemplate:buzz.fetch[{#BUZZPATH}].last(0)} = -8989</expression>
                             <name>{#BUZZTITLE} - {#BUZZLABEL}</name>
                             <url/>
                             <status>0</status>
@@ -102,6 +144,12 @@
                             <description/>
                             <type>0</type>
                         </trigger_prototype>
+                        
+                        <!-- CRITICAL -->
+                        <!-- TODO                         
+                        <priority>1</priority> 
+                        -->
+                        
                     </trigger_prototypes>
 					
 							
@@ -153,4 +201,19 @@
 			
 		</template>
 	</templates>
+	
+	<triggers>
+		<!-- Connectivity check -->
+		<trigger>		
+      		<expression>{BuzzTemplate:buzz.ping.nodata(1m)}=1</expression>
+      		<name>Buzz/Zabbix agent on {HOSTNAME} is unreachable for 1 minute</name>
+      		<url></url>
+      		<status>0</status>
+      		<priority>2</priority>
+      		<description></description>
+      		<type>0</type>
+      		<dependencies></dependencies>
+    	</trigger>
+	</triggers>
+	
 </zabbix_export>
