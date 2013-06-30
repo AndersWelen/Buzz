@@ -66,6 +66,21 @@ public class BuzzMetricsProvider implements MetricsProvider {
 			return getZabbixFetch(metricKey);
 		}
 		
+		// Zabbix fetch trigger values
+		// Only to be used until https://www.zabbix.com/forum/showthread.php?t=40760 is fixed
+		if (key.equals("fetchWarnLow")) {			
+			return getZabbixLimit(metricKey, "warning", true);
+		}
+		if (key.equals("fetchWarnHigh")) {
+			return getZabbixLimit(metricKey, "warning", false);
+		}
+		if (key.equals("fetchCriticalLow")) {			
+			return getZabbixLimit(metricKey, "critical", true);
+		}
+		if (key.equals("fetchCriticalHigh")) {
+			return getZabbixLimit(metricKey, "critical", false);
+		}
+		
 		LOG.error("Unknown key: " + key);
 		throw new MetricsException("Unknown key: " + key);					
 	}
@@ -114,9 +129,11 @@ public class BuzzMetricsProvider implements MetricsProvider {
 			if (warnThreshold != null) {				
 				String warnLevels[] = warnThreshold.split(":");
 				if (warnLevels[0].length() > 0) {
+					// TODO Some calc may be necessary
 					tmpObject.put("{#BUZZWARNLOW}", warnLevels[0]);
 				}
 				if (warnLevels.length > 1 && warnLevels[1].length() > 0) {
+					// TODO Some calc may be necessary
 					tmpObject.put("{#BUZZWARNHIGH}", warnLevels[1]);
 				}
 			}		
@@ -124,9 +141,11 @@ public class BuzzMetricsProvider implements MetricsProvider {
 			if (criticalThreshold != null) {
 				String criticalLevels[] = criticalThreshold.split(":");
 				if (criticalLevels[0].length() > 0) {
+					// TODO Some calc may be necessary
 					tmpObject.put("{#BUZZCRITICALLOW}", criticalLevels[0]);
 				}
 				if (criticalLevels.length > 1 && criticalLevels[1].length() > 0) {
+					// TODO Some calc may be necessary
 					tmpObject.put("{#BUZZCRITICALHIGH}", criticalLevels[1]);
 				}				
 			}		
@@ -141,6 +160,35 @@ public class BuzzMetricsProvider implements MetricsProvider {
 			LOG.debug("Returning Zabbix discovery: " + answer);
 		}
 		return answer;
+	}
+	
+	// TODO Remove when Zabbix supports https://www.zabbix.com/forum/showthread.php?t=40760
+	private Long getZabbixLimit(MetricsKey metricKey, String match, boolean low) {
+		String path = metricKey.getParameters()[0];
+		String part[] = path.split("/");
+		
+		Properties setup = protocol.getTypeHandler(part[0]).getProperties();			
+		String threshold = (String) setup.get("threshold." + part[2] + "." + match);
+		if (threshold != null) {				
+			String levels[] = threshold.split(":");
+			if (low && levels[0].length() > 0) {
+				// TODO Some calc may be necessary
+				try {
+					return Long.parseLong(levels[0]);
+				} catch (NumberFormatException e) {
+					LOG.error(levels[0] + " is not a number. Ignoring the setting", e); 
+				}
+			}
+			if (!low && levels.length > 1 && levels[1].length() > 0) {
+				// TODO Some calc may be necessary
+				try {
+					return Long.parseLong(levels[1]);
+				} catch (NumberFormatException e) {
+					LOG.error(levels[1] + " is not a number. Ignoring the setting", e); 
+				}
+			}
+		}
+		return 42424242L;   // Magic number that states that the limit is not configured
 	}
 	
 }

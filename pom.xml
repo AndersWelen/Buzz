@@ -8,7 +8,7 @@
 	<name>Buzz</name>
 	<packaging>jboss-sar</packaging>
 	<version>SNAPSHOT</version>
-	<description>Monitoring framework for the JBoss Application Server</description>
+	<description>Monitoring framework for the JBoss/WildFly Application Server</description>
 	<url>https://github.com/AndersWelen/Buzz</url>
 
 	<prerequisites>

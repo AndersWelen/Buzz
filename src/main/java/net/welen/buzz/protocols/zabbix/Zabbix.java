@@ -81,7 +81,7 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 	 */
 	public void startProtocol() throws Exception {
 		ZabbixAgent agent = new ZabbixAgent();
-
+		
 		// Start the collection thread
 		collector.start();
 		
