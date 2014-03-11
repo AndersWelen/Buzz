@@ -127,7 +127,8 @@ public class MuninSocketHandler extends Thread {
 						LOG.warn("cap multigraph not executed. Returing nothing.");
 						out.println("");
 					}
-				} else if (command.equals("cap multigraph")) {		// cap
+				} else if (command.startsWith("cap ")				// cap
+						&& command.contains("multigraph")) {
 					LOG.debug("Command is \"cap multigraph\".");
 					multigraph = true;
 					out.println("cap multigraph");
