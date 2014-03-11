@@ -1,7 +1,7 @@
 /*
  * Buzz - a monitoring framework for JBoss
  *
- * Copyright 2012-2013 Anders Welén, anders@welen.net
+ * Copyright 2012-2014 Anders Welén, anders@welen.net
  * 
  * This file is part of Buzz.
  *
@@ -127,7 +127,8 @@ public class MuninSocketHandler extends Thread {
 						LOG.warn("cap multigraph not executed. Returing nothing.");
 						out.println("");
 					}
-				} else if (command.equals("cap multigraph")) {		// cap
+				} else if (command.startsWith("cap ")				// cap
+						&& command.contains("multigraph")) {
 					LOG.debug("Command is \"cap multigraph\".");
 					multigraph = true;
 					out.println("cap multigraph");

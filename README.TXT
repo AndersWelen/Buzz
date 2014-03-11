@@ -1,7 +1,7 @@
 Buzz - a monitoring framework for the
        JBoss/WildFly Application Server
 
-Copyright 2012-2013 Anders Welén, anders@welen.net
+Copyright 2012-2014 Anders Welén, anders@welen.net
 (See also "copyright.txt")
 
 Documentation: https://github.com/AndersWelen/Buzz/wiki
