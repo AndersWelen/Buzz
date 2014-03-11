@@ -1,6 +1,6 @@
 Buzz - a monitoring framework for JBoss
 
-Copyright 2012 Anders Welén, anders@welen.net
+Copyright 2012-2014 Anders Welén, anders@welen.net
 (See also "copyright.txt")
 
 For more info and documentation: https://github.com/AndersWelen/Buzz

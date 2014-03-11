@@ -1,7 +1,7 @@
 /*
  * Buzz - a monitoring framework for JBoss
  *
- * Copyright 2012 Anders Welén, anders@welen.net
+ * Copyright 2012-2014 Anders Welén, anders@welen.net
  * 
  * This file is part of Buzz.
  *
