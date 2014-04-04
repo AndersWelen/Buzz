@@ -80,7 +80,7 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 	 * @see net.welen.buzz.protocols.Protocol#startProtocol()
 	 */
 	public void startProtocol() throws Exception {
-		ZabbixAgent agent = new ZabbixAgent();
+		agent = new ZabbixAgent();
 		
 		// Start the collection thread
 		collector.start();
@@ -105,7 +105,7 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 		
 		// Start service
 		agent.start();
-		LOG.info("Buzz Zabbix started.");
+		LOG.info("Buzz Zabbix started on " + listenAddress + ":" + listenPort);
 	}
 	
 	protected Object getIndividualValue(String category, String name, String key) {
@@ -129,7 +129,6 @@ public class Zabbix extends AbstractProtocol implements ZabbixMBean {
 		// Stop the collector
 		collector.stopCollector();
 		
-		// TODO It doesn't seem to release the socket
 		if (agent != null) {
 			agent.stop();
 		}
