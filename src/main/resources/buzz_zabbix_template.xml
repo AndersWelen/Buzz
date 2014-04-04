@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
 	<version>2.0</version>
-	<date>2013-04-16T08:36:09Z</date>
+	<date>2014-04-04T12:36:09Z</date>
 
 	<groups>
 		<group>
@@ -13,15 +13,15 @@
 		<template>
 			<template>Template JBoss-WildFly Buzz</template>
 			<name>Template JBoss-WildFly Buzz</name>
-			
+
 			<groups>
 				<group>
 					<name>JBoss/WildFly Application Servers</name>
 				</group>
 			</groups>
-			
+
 			<applications />
-		
+
 			<items>
 				<item>
 					<name>BuzzAgent ping</name>
@@ -32,10 +32,10 @@
 					<trends>365</trends>
 					<value_type>3</value_type>		<!-- 3=Numeric unsigned -->
 					<description>The BuzzAgent always returns 1 for this item. It could be used in combination with nodata() for availability check.</description>
-					<applications/>					
+					<applications />
 				</item>
 			</items>
-			
+
 			<discovery_rules>
 				<discovery_rule>
 					<name>Discovery</name>
@@ -57,143 +57,67 @@
 							<!-- TODO Add when Zabbix can handle it -->
 							<!-- <units>{#BUZZITEM}</unit> -->
 							<description />
-							<applications/>
+							<applications />
 						</item_prototype>
+					</item_prototypes>
 
-						<!-- TODO These should be removed when Zabbix supports:
-								(https://www.zabbix.com/forum/showthread.php?t=40760) -->                             
-						<item_prototype>
-							<name>BUZZ INTERNAL USAGE ONLY: {#BUZZPATH} WarnLow</name>
-							<type>0</type>						<!-- 0=Zabbix Agent -->
-							<key>buzz.fetchWarnLow[{#BUZZPATH}]</key>
-							<delay>30</delay>					<!-- Update interval in sec -->
-							<history>90</history>
-							<trends>365</trends>
-							<value_type>0</value_type>			<!-- 0=Numeric float -->
-							<description>Will be removed in the future: https://www.zabbix.com/forum/showthread.php?t=40760</description>
-							<applications/>
-						</item_prototype>
-						<item_prototype>
-							<name>BUZZ INTERNAL USAGE ONLY: {#BUZZPATH} WarnHigh</name>
-							<type>0</type>						<!-- 0=Zabbix Agent -->
-							<key>buzz.fetchWarnHigh[{#BUZZPATH}]</key>
-							<delay>30</delay>					<!-- Update interval in sec -->
-							<history>90</history>
-							<trends>365</trends>
-							<value_type>0</value_type>			<!-- 0=Numeric float -->
-							<description>Will be removed in the future: https://www.zabbix.com/forum/showthread.php?t=40760</description>
-							<applications/>
-						</item_prototype>
-						<item_prototype>
-							<name>BUZZ INTERNAL USAGE ONLY: {#BUZZPATH} CriticalLow</name>
-							<type>0</type>						<!-- 0=Zabbix Agent -->
-							<key>buzz.fetchCriticalLow[{#BUZZPATH}]</key>
-							<delay>30</delay>					<!-- Update interval in sec -->
-							<history>90</history>
-							<trends>365</trends>
-							<value_type>0</value_type>			<!-- 0=Numeric float -->
-							<description>Will be removed in the future: https://www.zabbix.com/forum/showthread.php?t=40760</description>
-							<applications/>
-						</item_prototype>
-						<item_prototype>
-							<name>BUZZ INTERNAL USAGE ONLY: {#BUZZPATH} CriticalHigh</name>
-							<type>0</type>						<!-- 0=Zabbix Agent -->
-							<key>buzz.fetchCriticalHigh[{#BUZZPATH}]</key>
-							<delay>30</delay>					<!-- Update interval in sec -->
-							<history>90</history>
-							<trends>365</trends>
-							<value_type>0</value_type>			<!-- 0=Numeric float -->
-							<description>Will be removed in the future: https://www.zabbix.com/forum/showthread.php?t=40760</description>
-							<applications/>
-						</item_prototype>
+					<trigger_prototypes>
+					
+						<!-- WARNINGS -->
+						<trigger_prototype>
+							<expression>{Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)}&lt;{#BUZZWARNLOW}</expression>
+							<name>{#BUZZTITLE} - {#BUZZLABEL}: Current value is less than {#BUZZWARNLOW}</name>
+							<priority>2</priority>			<!-- 2=warning -->
+							<description>Warn if last collected value is lower than threshold.</description>
+						</trigger_prototype>
+						<trigger_prototype>
+							<expression>{Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)}&gt;{#BUZZWARNHIGH}</expression>
+							<name>{#BUZZTITLE} - {#BUZZLABEL}: Current value is higher than {#BUZZWARNHIGH}</name>
+							<priority>2</priority>			<!-- 2=warning -->
+							<description>Warn if last collected value is higher than threshold.</description>
+						</trigger_prototype>
 						
-					</item_prototypes>					
+						<!-- CRITICAL -->
+						<trigger_prototype>
+							<expression>{Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)}&lt;{#BUZZCRITICALLOW}</expression>
+							<name>{#BUZZTITLE} - {#BUZZLABEL}: Current value is less than {#BUZZCRITICALLOW}</name>
+							<priority>4</priority>			<!-- 4=high -->							
+							<description>Send alarm if last collected value is lower than threshold.</description>
+						</trigger_prototype>
+						<trigger_prototype>
+							<expression>{Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)}&gt;{#BUZZCRITICALHIGH}</expression>
+							<name>{#BUZZTITLE} - {#BUZZLABEL}: Current value is higher than {#BUZZCRITICALHIGH}</name>
+							<priority>4</priority>			<!-- 4=high -->
+							<description>Send alarm if last collected value is higher than threshold.</description>
+						</trigger_prototype>
 
-					<trigger_prototypes>						
-					
-						<!-- TODO These checks should be re-implemented when Zabbix supports it
-                       	          (https://www.zabbix.com/forum/showthread.php?t=40760)                             
-                           <expression>{Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)}&lt;{#BUZZWARNLOW} | {Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)}&gt;{#BUZZWARNHIGH}</expression>                             
-						-->					
-					
-						<!-- WARNINGS -->						
-                        <trigger_prototype>
-                            <expression>{Template JBoss-WildFly Buzz:buzz.fetchWarnLow[{#BUZZPATH}].last(0)} # 42424242 &amp; {Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)} &lt; {Template JBoss-WildFly Buzz:buzz.fetchWarnLow[{#BUZZPATH}].last(0)}</expression>
-                            <name>{#BUZZTITLE} - {#BUZZLABEL}: Current value is less than {#BUZZWARNLOW}</name>
-                            <priority>2</priority>			<!-- 2=warning -->			
-                            <description/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template JBoss-WildFly Buzz:buzz.fetchWarnHigh[{#BUZZPATH}].last(0)} # 42424242 &amp; {Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)} &gt; {Template JBoss-WildFly Buzz:buzz.fetchWarnHigh[{#BUZZPATH}].last(0)}</expression>
-                            <name>{#BUZZTITLE} - {#BUZZLABEL}: Current value is higher than {#BUZZWARNHIGH}</name>
-                            <priority>2</priority>			<!-- 2=warning -->			
-                            <description/>
-                        </trigger_prototype>
-                        
-                        <!-- CRITICAL -->
-                        <trigger_prototype>
-                            <expression>{Template JBoss-WildFly Buzz:buzz.fetchCriticalLow[{#BUZZPATH}].last(0)} # 42424242 &amp; {Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)} &lt; {Template JBoss-WildFly Buzz:buzz.fetchCriticalLow[{#BUZZPATH}].last(0)}</expression>
-                            <name>{#BUZZTITLE} - {#BUZZLABEL}: Current value is less than {#BUZZCRITICALLOW}</name>
-                            <priority>4</priority>			<!-- 4=high -->			
-                            <description/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template JBoss-WildFly Buzz:buzz.fetchCriticalHigh[{#BUZZPATH}].last(0)} # 42424242 &amp; {Template JBoss-WildFly Buzz:buzz.fetch[{#BUZZPATH}].last(0)} &gt; {Template JBoss-WildFly Buzz:buzz.fetchCriticalHigh[{#BUZZPATH}].last(0)}</expression>
-                            <name>{#BUZZTITLE} - {#BUZZLABEL}: Current value is higher than {#BUZZCRITICALHIGH}</name>
-                            <priority>4</priority>			<!-- 4=high -->
-                            <description/>
-                        </trigger_prototype>
-                        
-                    </trigger_prototypes>
-							
-					<graph_prototypes>		
-						<!-- TODO https://support.zabbix.com/browse/ZBXNEXT-927 -->			
-						<graph_prototype>
-							<name>{#BUZZTITLE}</name>
-							<width>900</width>
-							<height>200</height>
-							<type>0</type>					<!-- 0=normal -->				
-									
-							<!-- ??? -->
-							<ymin_type_1>0</ymin_type_1>
-							<ymax_type_1>0</ymax_type_1>			
-							<ymin_item_1>0</ymin_item_1>
-							<ymax_item_1>0</ymax_item_1>
-																		
-							<graph_items>
-								<graph_item>
-									<drawtype>0</drawtype> 		<!-- 0=line -->									
-									<color>C80000</color>
-									<item>
-										<host>Template JBoss-WildFly Buzz</host>
-										<key>buzz.fetch[{#BUZZPATH}]</key>
-									</item>
-								</graph_item>
-							</graph_items>
-						</graph_prototype>
-					</graph_prototypes>
-					
+					</trigger_prototypes>
+
+					<!-- TODO It seems like that graphs isn't possible yet: https://support.zabbix.com/browse/ZBXNEXT-927 -->
+					<graph_prototypes />
+						
 				</discovery_rule>
 			</discovery_rules>
-			
+
 			<macros />
-			
+
 			<templates />
-			
+
 			<screens />
-			
+
 		</template>
 	</templates>
-	
+
 	<triggers>
 		<!-- Connectivity check -->
-		<trigger>		
-      		<expression>{Template JBoss-WildFly Buzz:buzz.ping.nodata(1m)}=1</expression>
-      		<name>JBoss/WildFly Zabbix agent (Buzz) on {HOSTNAME} has been unreachable for 1 minute</name>      		<url></url>
-      		<priority>4</priority>			<!-- 4=high -->
-      		<description/>
-      		<dependencies/>
-    	</trigger>
+		<trigger>
+			<expression>{Template JBoss-WildFly Buzz:buzz.ping.nodata(1m)}=1</expression>
+			<name>JBoss/WildFly Zabbix agent (Buzz) on {HOSTNAME} has been unreachable for 1 minute</name>
+			<url></url>
+			<priority>4</priority>			<!-- 4=high -->
+			<description />
+			<dependencies />
+		</trigger>
 	</triggers>
-	
+
 </zabbix_export>
