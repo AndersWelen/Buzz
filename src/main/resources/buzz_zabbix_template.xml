@@ -27,6 +27,7 @@
 					<name>BuzzAgent ping</name>
 					<type>0</type>					<!-- 0=Zabbix Agent -->
 					<key>buzz.ping</key>
+					<!-- TODO Correct value? The trigger is set to 1 min below -->
 					<delay>30</delay>				<!-- Update interval in sec -->
 					<history>90</history>
 					<trends>365</trends>
@@ -41,6 +42,7 @@
 					<name>Discovery</name>
 					<type>0</type>					<!-- 0=Zabbix Agent -->
 					<key>buzz.discovery</key>
+					<!-- TODO Change to 5*60=300 before release -->
 					<delay>30</delay>				<!-- Update interval in sec -->
 					<lifetime>30</lifetime>			<!-- Days before no longer discovered items should be removed -->
 					<description>Discovery of Buzz exposed information from JBoss/WildFly Application Servers.</description>
@@ -50,6 +52,7 @@
 							<name>{#BUZZTITLE} - {#BUZZLABEL}</name>
 							<type>0</type>						<!-- 0=Zabbix Agent -->
 							<key>buzz.fetch[{#BUZZPATH}]</key>
+							<!-- TODO Change to 5*60=300 before release? -->
 							<delay>30</delay>					<!-- Update interval in sec -->
 							<history>90</history>
 							<trends>365</trends>
