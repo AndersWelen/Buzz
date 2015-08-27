@@ -3,6 +3,11 @@ Buzz - a monitoring framework for JBoss
 Copyright 2012-2014 Anders Welén, anders@welen.net
 (See also "copyright.txt")
 
+=============== PLEASE NOTE ============================================================
+This project is no longer maintained. Project JMole (https://bitbucket.org/awelen/jmole)
+does more or less the same thing, but better ;-)
+========================================================================================
+
 For more info and documentation: https://github.com/AndersWelen/Buzz
 
 Special thanks goes to:
